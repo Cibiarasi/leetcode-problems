@@ -1,0 +1,54 @@
+class Solution {
+    public int minSwaps(int[] nums) {
+        int n=nums.length;
+        HashMap<Integer,Integer>map=new HashMap<>();
+        Pair[]arr=new Pair[n];
+        for(int i=0;i<n;i++){
+              int s=sum(nums[i]);
+              arr[i]=new Pair(nums[i],s);
+        }
+        Arrays.sort(arr,(p1,p2)->{
+            if(p1.b!=p2.b){
+                return Integer.compare(p1.b,p2.b);
+            }
+            return Integer.compare(p1.a,p2.a);
+        });
+        for(int i=0;i<n;i++){
+            int a=nums[i];
+            map.put(a,i);
+        }
+        int ans=0;
+         for(int i=0;i<n;i++){
+            // int a=nums[i];
+            Pair p=arr[i];
+            int a=p.a;
+             int r=map.get(a);
+             if(i!=r){
+                 ans++;
+                 int b=nums[i];
+                 nums[i]=a;
+                 nums[r]=b;
+                 map.put(a,i);
+                 map.put(b,r);
+             }
+         }
+         return ans;
+    }
+    public int sum(int n){
+        int sum=0;
+        while(n>0){
+            int r=n%10;
+            sum+=r;
+            n/=10;
+        }
+        return sum;
+    }
+    public class Pair{
+        int a;
+        int b;
+        Pair(int a,int b){
+            this.a=a;
+            this.b=b;
+        }
+    }
+}
